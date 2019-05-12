@@ -2,51 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
 <html>
 <head>
-	<title>Stick Figure</title>
-	<!-- TODO: seperate css file -->
-	<style>
-	body {
-		margin: 0;
-		padding: 0;
-		font-family: sans-serif;
-		font-size: 14px;
-	}
-	.centered {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	button {
-		border-radius: 4px;
-		padding: 7px;
-	}
-	svg {
-		width: 400px;
-		height: 400px;
-		fill: none;
-		stroke: black;
-		stroke-width: 1;
-		border: 1px solid black;
-	}
-	/*
-	How to flip the Y axis to normal cartisian coordinates, without reversing text.
-	https://stackoverflow.com/questions/3846015/flip-svg-coordinate-system
-	*/
-	svg.cartesian {
-		display:flex;
-	}
-	svg.cartesian > g {
-		transform: scaleY(-1);
-	}
-	svg.cartesian > g text {
-		transform: scaleY(-1);
-	}
-	.svg_frame {
-		position: relative;
-		padding-left: 40px;
-		padding-bottom: 40px;
-	}
-	</style>
+	<title>Stick Figures</title>
+	<link href="index.css" rel="stylesheet" type="text/css">
 	<script src="point.js" charset="utf-8"></script>
 	<script src="stick_figure.js" charset="utf-8"></script>
 	<script type="text/javascript">
