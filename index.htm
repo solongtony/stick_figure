@@ -48,7 +48,11 @@
 
 		const id2 = "b";
 		document.getElementById("container").innerHTML += `<g id="${id2}"/>`;
-		const figure2 = new StickFigure(id1, new Point(15, 5));
+		const figure2 = new StickFigure(id2, new Point(15, 5), 0.4);
+
+		const id3 = "c";
+		document.getElementById("container").innerHTML += `<g id="${id3}"/>`;
+		const figure3 = new StickFigure(id3, new Point(25, 0), 0.6);
 
 		function drawFigure() {
 			const inner_svg1 = figure1.inner_svg();
@@ -56,6 +60,9 @@
 
 			const inner_svg2 = figure2.inner_svg();
 			document.getElementById(id2).innerHTML = inner_svg2;
+
+			const inner_svg3 = figure3.inner_svg();
+			document.getElementById(id3).innerHTML = inner_svg3;
 		}
 		// Dance!
 		window.setInterval(drawFigure, 200);
