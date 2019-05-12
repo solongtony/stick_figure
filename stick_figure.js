@@ -64,7 +64,8 @@ function rand_shift() {
 }
 
 class StickFigure {
-  constructor(center_of_gravity = new Point(0, 0)) {
+  constructor(id, center_of_gravity = new Point(0, 0)) {
+    this.id = name;
     this.hip_nexus = center_of_gravity;
   }
 
@@ -73,10 +74,6 @@ class StickFigure {
     // Would start from the center of mass, but that is the middle of the belly.
     // Starting from bottom of the belly, aka nexus of the hips and belly, aka groin.
     return [
-      // Reference Axis
-      this.group_open(),
-      this.axis(),
-      this.group_close(),
       // The stick figure
       this.group_open(),
       // Heading Up
@@ -96,22 +93,13 @@ class StickFigure {
     .join("\n");
   }
 
-  svg_open() {
-    // TODO: dynamically set viewbox, stroke, stroke-width.
-    return `<svg class="cartesian" width="200" height="200" viewBox="-100 -100 200 200" preserveAspectRatio="xMidYMid meet">`;
-  }
-
-  svg_close() { return '</svg>'; }
-
-  group_open() { return '<g>'; }
+  group_open() { return `<g id="{this.id}">`; }
 
   group_close() { return'</g>'; }
 
   axis() {
     return [
-      // Vertical / Horizontal Axis
-      '<path d="M0 -250 V 500" stroke="green" stroke-width="0.5" stroke-opacity="0.5" />',
-      '<path d="M-250 0 H 500" stroke="green" stroke-width="0.5" stroke-opacity="0.5" />'
+
     ];
   }
 
