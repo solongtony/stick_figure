@@ -26,7 +26,6 @@ const BODY_LENGTHS = new Map([
 // Directions in Pi radians.
 const DIRECTIONS = new Map([
   ['right', 0.0],
-  ['16th', 0.125],
   ['up', 0.5],
   ['left', 1.0],
   ['down', 1.5]
@@ -44,7 +43,9 @@ function svg_line(start, end) {
 }
 
 function extend(start, direction, body_part) {
-  return start.polar_add(DIRECTIONS.get(direction), BODY_LENGTHS.get(body_part));
+  return start.polar_add(
+    DIRECTIONS.get(direction) + rand_shift(),
+    BODY_LENGTHS.get(body_part));
 }
 
 function svg_ellipse(center, radii) {
@@ -58,6 +59,10 @@ function offset_ellipse(base, direction, xr, yr) {
   return svg_ellipse(center, new Point(xr, yr));
 }
 
+function rand_shift() {
+  return Math.random()/16 - 1/32 ;
+}
+
 class StickFigure {
   constructor(center_of_gravity = new Point(0, 0)) {
     this.hip_nexus = center_of_gravity;
@@ -65,10 +70,22 @@ class StickFigure {
 
   // Create svg elements to draw the stick figure.
   svg() {
+    return this.svg_open() + "\n" +
+    this.inner_svg() + "\n" +
+    this.svg_close();
+  }
+
+  // Create svg elements to draw the stick figure.
+  inner_svg() {
     // Would start from the center of mass, but that is the middle of the belly.
     // Starting from bottom of the belly, aka nexus of the hips and belly, aka groin.
     return [
-      this.svg_open(),
+      // Reference Axis
+      this.group_open(),
+      this.axis(),
+      this.group_close(),
+      // The stick figure
+      this.group_open(),
       // Heading Up
       // The torso must be drawn before arms, neck etc.
       // because it determins where the cneter of the shoulders are.
@@ -81,26 +98,27 @@ class StickFigure {
       // Legs include hips
       this.right_leg(),
       this.left_leg(),
-      this.svg_close()
+      this.group_close()
     ].flat()
     .join("\n");
   }
 
   svg_open() {
     // TODO: dynamically set viewbox, stroke, stroke-width.
+    return `<svg class="cartesian" width="200" height="200" viewBox="-100 -100 200 200" preserveAspectRatio="xMidYMid meet">`;
+  }
+
+  svg_close() { return '</svg>'; }
+
+  group_open() { return '<g>'; }
+
+  group_close() { return'</g>'; }
+
+  axis() {
     return [
-      `<svg class="cartesian" width="200" height="200" viewBox="-100 -100 200 200" preserveAspectRatio="xMidYMid meet">`,
-      '<g>',
       // Vertical / Horizontal Axis
       '<path d="M0 -250 V 500" stroke="green" stroke-width="0.5" stroke-opacity="0.5" />',
       '<path d="M-250 0 H 500" stroke="green" stroke-width="0.5" stroke-opacity="0.5" />'
-    ];
-  }
-
-  svg_close() {
-    return [
-      '</g>',
-      '</svg>'
     ];
   }
 

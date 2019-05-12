@@ -43,14 +43,20 @@
 	<script type="text/javascript">
 	window.onload = function () {
 		const figure = new StickFigure();
-		// Quick and dirty SVG element creation.
-		const text = figure.svg();
-		//alert(text);
-		document.getElementById("container").innerHTML = text;
+		function drawFigure() {
+			// Quick and dirty SVG element creation.
+			const inner_svg = figure.inner_svg();
+			document.getElementById("container").innerHTML = inner_svg;
+		}
+		// Dance!
+		window.setInterval(drawFigure, 200);
 	};
 	</script>
 </head>
 <body>
-	<div class="svg_frame" id="container"></div>
+	<div class="svg_frame">
+		<svg id="container" class="cartesian" width="200" height="200" viewBox="-100 -100 200 200" preserveAspectRatio="xMidYMid meet">
+		</svg>
+	</div>
 </body>
 </html>
