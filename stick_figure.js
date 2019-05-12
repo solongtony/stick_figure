@@ -43,6 +43,10 @@ function svg_line(start, end) {
   return `<line x1="${start.x}" y1="${start.y}" x2="${end.x}" y2="${end.y}"/>`;
 }
 
+function extend(start, direction, body_part) {
+  return start.polar_add(DIRECTIONS.get(direction), BODY_LENGTHS.get(body_part));
+}
+
 function svg_ellipse(center, radii) {
   return `<ellipse cx="${center.x}" cy="${center.y}" rx="${radii.x}" ry="${radii.y}"/>`;
 }
@@ -102,8 +106,8 @@ class StickFigure {
 
   // Side Effect! Sets `shoulder_nexus`
   torso() {
-    const belly_end = this.hip_nexus.polar_add(DIRECTIONS.get("up"), BODY_LENGTHS.get("belly"));
-    const ribs_end = belly_end.polar_add(DIRECTIONS.get("up"), BODY_LENGTHS.get("ribs"));
+    const belly_end = extend(this.hip_nexus ,'up', 'belly');
+    const ribs_end = extend(belly_end ,'up', 'ribs');
     this.shoulder_nexus = ribs_end;
     return [
       svg_line(this.hip_nexus, belly_end),
@@ -112,7 +116,7 @@ class StickFigure {
   }
 
   neck_head() {
-    const neck_end = this.shoulder_nexus.polar_add(DIRECTIONS.get('up'), BODY_LENGTHS.get('neck'));
+    const neck_end = extend(this.shoulder_nexus ,'up', 'neck');
     return [
       svg_line(this.shoulder_nexus, neck_end),
       offset_ellipse(neck_end, DIRECTIONS.get('up'), BODY_LENGTHS.get('head_half_width'), BODY_LENGTHS.get('head_half_height'))
@@ -120,9 +124,9 @@ class StickFigure {
   }
 
   right_arm() {
-    const shoulder_end = this.shoulder_nexus.polar_add(DIRECTIONS.get('right'), BODY_LENGTHS.get('shoulder'));
-    const upper_arm_end = shoulder_end.polar_add(DIRECTIONS.get('down'), BODY_LENGTHS.get('upper_arm'));
-    const lower_arm_end = upper_arm_end.polar_add(DIRECTIONS.get('down'), BODY_LENGTHS.get('lower_arm'));
+    const shoulder_end = extend(this.shoulder_nexus ,'right', 'shoulder');
+    const upper_arm_end = extend(shoulder_end ,'down', 'upper_arm');
+    const lower_arm_end = extend(upper_arm_end ,'down', 'lower_arm');
     return [
       svg_line(this.shoulder_nexus, shoulder_end),
       svg_line(shoulder_end, upper_arm_end),
@@ -132,9 +136,9 @@ class StickFigure {
   }
 
   left_arm() {
-    const shoulder_end = this.shoulder_nexus.polar_add(DIRECTIONS.get('left'), BODY_LENGTHS.get('shoulder'));
-    const upper_arm_end = shoulder_end.polar_add(DIRECTIONS.get('down'), BODY_LENGTHS.get('upper_arm'));
-    const lower_arm_end = upper_arm_end.polar_add(DIRECTIONS.get('down'), BODY_LENGTHS.get('lower_arm'));
+    const shoulder_end = extend(this.shoulder_nexus ,'left', 'shoulder');
+    const upper_arm_end = extend(shoulder_end ,'down', 'upper_arm');
+    const lower_arm_end = extend(upper_arm_end ,'down', 'lower_arm');
     return [
       svg_line(this.shoulder_nexus, shoulder_end),
       svg_line(shoulder_end, upper_arm_end),
@@ -144,9 +148,9 @@ class StickFigure {
   }
 
   right_leg() {
-    const hip_end = this.hip_nexus.polar_add(DIRECTIONS.get('right'), BODY_LENGTHS.get('hip'));
-    const upper_leg_end = hip_end.polar_add(DIRECTIONS.get('down'), BODY_LENGTHS.get('upper_leg'));
-    const lower_leg_end = upper_leg_end.polar_add(DIRECTIONS.get('down'), BODY_LENGTHS.get('lower_leg'));
+    const hip_end = extend(this.hip_nexus ,'right', 'hip');
+    const upper_leg_end = extend(hip_end ,'down', 'upper_leg');
+    const lower_leg_end = extend(upper_leg_end ,'down', 'lower_leg');
     return [
       svg_line(this.hip_nexus, hip_end),
       svg_line(hip_end, upper_leg_end),
@@ -156,9 +160,9 @@ class StickFigure {
   }
 
   left_leg() {
-    const hip_end = this.hip_nexus.polar_add(DIRECTIONS.get('left'), BODY_LENGTHS.get('hip'));
-    const upper_leg_end = hip_end.polar_add(DIRECTIONS.get('down'), BODY_LENGTHS.get('upper_leg'));
-    const lower_leg_end = upper_leg_end.polar_add(DIRECTIONS.get('down'), BODY_LENGTHS.get('lower_leg'));
+    const hip_end = extend(this.hip_nexus ,'left', 'hip');
+    const upper_leg_end = extend(hip_end ,'down', 'upper_leg');
+    const lower_leg_end = extend(upper_leg_end ,'down', 'lower_leg');
     return [
       svg_line(this.hip_nexus, hip_end),
       svg_line(hip_end, upper_leg_end),
