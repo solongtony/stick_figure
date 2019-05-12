@@ -11,6 +11,15 @@
 		font-family: sans-serif;
 		font-size: 14px;
 	}
+	.centered {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	button {
+		border-radius: 4px;
+		padding: 7px;
+	}
 	svg {
 		width: 400px;
 		height: 400px;
@@ -42,43 +51,57 @@
 	<script src="stick_figure.js" charset="utf-8"></script>
 	<script type="text/javascript">
 	window.onload = function () {
-		const id1 = "a";
-		const figure1 = new StickFigure(id1, new Point(-20, -5));
-		document.getElementById("container").innerHTML += `<g id="${id1}"/>`;
+		const figures = Object(null);
+		initFigure(-20, -5, 1);
+		initFigure(15, 5, 0.4);
+		initFigure(25, 0, 0.6);
 
-		const id2 = "b";
-		document.getElementById("container").innerHTML += `<g id="${id2}"/>`;
-		const figure2 = new StickFigure(id2, new Point(15, 5), 0.4);
+		// Animation
+		const draw_delay = 200;
+		var draw_interval = window.setInterval(drawFigures, draw_delay);
 
-		const id3 = "c";
-		document.getElementById("container").innerHTML += `<g id="${id3}"/>`;
-		const figure3 = new StickFigure(id3, new Point(25, 0), 0.6);
+		// Pause button
+		const pb = document.getElementById("pause");
+		pb.onclick = toggleAnimation;
 
-		function drawFigure() {
-			const inner_svg1 = figure1.inner_svg();
-			document.getElementById(id1).innerHTML = inner_svg1;
-
-			const inner_svg2 = figure2.inner_svg();
-			document.getElementById(id2).innerHTML = inner_svg2;
-
-			const inner_svg3 = figure3.inner_svg();
-			document.getElementById(id3).innerHTML = inner_svg3;
+		function initFigure(x, y, scale) {
+			var id = Math.random();
+			figures[id] = new StickFigure(id, new Point(x, y), scale);
+			document.getElementById("container").innerHTML += `<g id="${id}"/>`;
 		}
-		// Dance!
-		window.setInterval(drawFigure, 200);
+
+		function drawFigures() {
+			for (var id in figures) {
+				document.getElementById(id).innerHTML = figures[id].inner_svg();
+			}
+		}
+
+		function toggleAnimation() {
+			if (draw_interval) {
+				clearInterval(draw_interval);
+				pb.value = "Unpause";
+				draw_interval = null;
+			} else {
+				draw_interval = window.setInterval(drawFigures, draw_delay);
+				pb.value = "Pause";
+			}
+		}
 	};
 	</script>
 </head>
 <body>
-	<div class="svg_frame">
-		<!-- TODO: dynamically set viewBox. -->
-		<svg id="container" class="cartesian" viewBox="-50 -50 100 100" preserveAspectRatio="xMidYMid meet">
-			<g>
-				<!-- Vertical / Horizontal Axis -->
-				<path d="M0 -250 V 500" stroke="green" stroke-width="0.5" stroke-opacity="0.5" />,
-				<path d="M-250 0 H 500" stroke="green" stroke-width="0.5" stroke-opacity="0.5" />
-			</g>
-		</svg>
+	<div>
+		<div class="svg_frame centered">
+			<!-- TODO: dynamically set viewBox. -->
+			<svg id="container" class="cartesian" viewBox="-50 -50 100 100" preserveAspectRatio="xMidYMid meet">
+				<g>
+					<!-- Vertical / Horizontal Axis -->
+					<path d="M0 -250 V 500" stroke="green" stroke-width="0.5" stroke-opacity="0.5" />,
+					<path d="M-250 0 H 500" stroke="green" stroke-width="0.5" stroke-opacity="0.5" />
+				</g>
+			</svg>
+		</div>
+		<div class="centered"><button id="pause" class="centered">Pause</button></div>
 	</div>
 </body>
 </html>
