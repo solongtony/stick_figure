@@ -69,13 +69,6 @@ class StickFigure {
   }
 
   // Create svg elements to draw the stick figure.
-  svg() {
-    return this.svg_open() + "\n" +
-    this.inner_svg() + "\n" +
-    this.svg_close();
-  }
-
-  // Create svg elements to draw the stick figure.
   inner_svg() {
     // Would start from the center of mass, but that is the middle of the belly.
     // Starting from bottom of the belly, aka nexus of the hips and belly, aka groin.
