@@ -14,7 +14,9 @@ class Point {
 
   /**
   Offsets a starting point to a new point using polar coordinates.
-  Uses units of Pi radians, aka quadrants.
+  Uses units of Pi radians.
+  https://en.wikipedia.org/wiki/Polar_coordinate_system
+  https://en.wikipedia.org/wiki/Radian
   @param Number rotation in Pi radians: 0 = 0 deg, 0.5 = 90 deg, 1 = 180 deg.
   @param Number length
   @return Point the offset point.
